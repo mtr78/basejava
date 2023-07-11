@@ -22,7 +22,7 @@ public class ArrayStorage {
 
     Resume get(String uuid) {
         int i = 0;
-        while (!storage[i].uuid.equals(uuid)) {
+        while (storage[i] !=  null && !storage[i].uuid.equals(uuid)) {
             i++;
         }
         return storage[i];
@@ -30,7 +30,7 @@ public class ArrayStorage {
 
     void delete(String uuid) {
         int i = 0;
-        while (!storage[i].uuid.equals(uuid)) {
+        while (storage[i] !=  null && !storage[i].uuid.equals(uuid)) {
             i++;
         }
         storage[i] = null;
