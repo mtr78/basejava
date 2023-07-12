@@ -43,7 +43,9 @@ public class ArrayStorage {
         int size = this.size();
         Resume[] allResumes = new Resume[size];
         for (int i = 0; i < size; i++) {
-            allResumes[i] = storage[i];
+            if(storage[i] != null) {
+                allResumes[i] = storage[i];
+            }
         }
         return new Resume[size];
     }
