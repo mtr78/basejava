@@ -22,18 +22,26 @@ public class ArrayStorage {
 
     Resume get(String uuid) {
         int i = 0;
-        while (storage[i] !=  null && !storage[i].uuid.equals(uuid)) {
+        while (storage[i] != null && !storage[i].uuid.equals(uuid)) {
             i++;
         }
         return storage[i];
     }
 
     void delete(String uuid) {
-        int i = 0;
-        while (storage[i] !=  null && !storage[i].uuid.equals(uuid)) {
-            i++;
+        int size = this.size();
+        boolean deleted = false;
+        for (int i = 0; i < size; i++) {
+            if (storage[i] != null && !storage[i].uuid.equals(uuid)) {
+                storage[i] = null;
+                deleted = true;
+            }
+            if (deleted && i < size - 1 && storage[i] != null) {
+                storage[i] = storage[i + 1];
+            }
         }
-        storage[i] = null;
+
+
     }
 
     /**
@@ -43,11 +51,11 @@ public class ArrayStorage {
         int size = this.size();
         Resume[] allResumes = new Resume[size];
         for (int i = 0; i < size; i++) {
-            if(storage[i] != null) {
+            if (storage[i] != null) {
                 allResumes[i] = storage[i];
             }
         }
-        return new Resume[size];
+        return allResumes;
     }
 
     int size() {
