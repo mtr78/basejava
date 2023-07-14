@@ -4,51 +4,43 @@
 public class ArrayStorage {
     Resume[] storage = new Resume[10000];
 
+    private int size = 0;
+
     void clear() {
-        int i = 0;
-        while (storage[i] != null) {
+        for (int i = 0; i < size; i++) {
             storage[i] = null;
-            i++;
         }
+        size = 0;
     }
 
     void save(Resume r) {
-        int i = 0;
-        while (storage[i] != null) {
-            i++;
-        }
-        storage[i] = r;
+        storage[size] = r;
+        size++;
     }
 
     Resume get(String uuid) {
-        int i = 0;
-        while (storage[i] != null && !storage[i].uuid.equals(uuid)) {
-            i++;
+        for (int i = 0; i < size; i++) {
+            if (storage[i] != null && storage[i].uuid.equals(uuid))
+                return storage[i];
         }
-        return storage[i];
+        return null;
     }
 
     void delete(String uuid) {
-        int size = this.size();
-        boolean deleted = false;
         for (int i = 0; i < size; i++) {
-            if (storage[i] != null && !storage[i].uuid.equals(uuid)) {
-                storage[i] = null;
-                deleted = true;
-            }
-            if (deleted && i < size - 1 && storage[i] != null) {
-                storage[i] = storage[i + 1];
+            if (storage[i] != null && storage[i].uuid.equals(uuid)) {
+                storage[i] = storage[size-1];
+                storage[size-1] = null;
+                size--;
+                break;
             }
         }
-
-
     }
 
     /**
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        int size = this.size();
         Resume[] allResumes = new Resume[size];
         for (int i = 0; i < size; i++) {
             if (storage[i] != null) {
@@ -59,14 +51,6 @@ public class ArrayStorage {
     }
 
     int size() {
-        int length = 0;
-        for (int i = 0; i < 10000; i++) {
-            if (storage[i] != null) {
-                length++;
-            } else if (storage[i] == null) {
-                break;
-            }
-        }
-        return length;
+        return size;
     }
 }
