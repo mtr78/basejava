@@ -9,7 +9,8 @@ import java.util.Objects;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    private Resume[] storage = new Resume[10000];
+    private final int STORAGE_LIMIT = 10000;
+    private final Resume[] storage = new Resume[STORAGE_LIMIT];
 
     public int size;
     private final String errorResumeNotFound = "Нет такого резюме";
@@ -20,7 +21,7 @@ public class ArrayStorage {
     }
 
     public void update(Resume resume) {
-        int index = resumeExist(resume);
+        int index = getIndex(resume.getUuid());
         if (index != -1) {
             storage[index] = resume;
         } else {
@@ -29,20 +30,17 @@ public class ArrayStorage {
     }
 
     public void save(Resume r) {
-        if (size <= storage.length) {
-            if (resumeExist(r) == -1) {
-                storage[size] = r;
-                size++;
-            } else {
-                System.out.println("Резюме уже есть");
-            }
+        if (getIndex(r.getUuid()) == -1 && size <= storage.length) {
+            storage[size++] = r;
+        } else if (getIndex(r.getUuid()) == -1) {
+            System.out.println("Резюме уже есть");
         } else {
             System.out.println("Переполнение storage");
         }
     }
 
     public Resume get(String uuid) {
-        int index = resumeExist(uuid);
+        int index = getIndex(uuid);
         if (index != -1) {
             return storage[index];
         } else {
@@ -52,7 +50,7 @@ public class ArrayStorage {
     }
 
     public void delete(String uuid) {
-        int index = resumeExist(uuid);
+        int index = getIndex(uuid);
         if (index != -1) {
             storage[index] = storage[size - 1];
             storage[size - 1] = null;
@@ -69,21 +67,13 @@ public class ArrayStorage {
         return Arrays.copyOf(storage, size);
     }
 
-    private int resumeExist(Resume resume) {
+    private int getIndex(String uuid) {
         for (int i = 0; i < size; i++) {
-            if (Objects.equals(storage[i].getUuid(), resume.getUuid()))
+            if (Objects.equals(storage[i].getUuid(), uuid)) {
                 return i;
+            }
         }
         return -1;
     }
-
-    private int resumeExist(String uuid) {
-        for (int i = 0; i < size; i++) {
-            if (Objects.equals(storage[i].getUuid(), uuid))
-                return i;
-        }
-        return -1;
-    }
-
 
 }
