@@ -30,9 +30,10 @@ public class ArrayStorage {
     }
 
     public void save(Resume r) {
-        if (getIndex(r.getUuid()) == -1 && size <= storage.length) {
+        int index = getIndex(r.getUuid());
+        if (index == -1 && size <= storage.length) {
             storage[size++] = r;
-        } else if (getIndex(r.getUuid()) == -1) {
+        } else if (index == -1) {
             System.out.println("Резюме уже есть");
         } else {
             System.out.println("Переполнение storage");
