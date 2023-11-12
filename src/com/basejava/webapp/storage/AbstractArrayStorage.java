@@ -8,7 +8,7 @@ import com.basejava.webapp.model.Resume;
 import java.util.Arrays;
 
 public abstract class AbstractArrayStorage implements Storage {
-    protected final int STORAGE_LIMIT = 10000;
+    protected static final int STORAGE_LIMIT = 10000;
     protected final Resume[] storage = new Resume[STORAGE_LIMIT];
 
     protected final String errorResumeNotFound = "Нет такого резюме";
@@ -34,13 +34,14 @@ public abstract class AbstractArrayStorage implements Storage {
 
     public void save(Resume r) {
         int index = getIndex(r.getUuid());
-        if (index < 0 && size <= storage.length) {
+        if (size == STORAGE_LIMIT) {
+            throw new StorageException("Переполнение storage", r.getUuid());
+        }
+        else if (index < 0 && size <= storage.length) {
             insertElement(r, index);
             size++;
         } else if (index >= 0) {
             throw new ExistStorageException(r.getUuid());
-        } else {
-            throw new StorageException("Переполнение storage", r.getUuid());
         }
     }
 
