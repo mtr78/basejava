@@ -1,5 +1,8 @@
 package com.basejava.webapp.storage;
 
+import com.basejava.webapp.exception.ExistStorageException;
+import com.basejava.webapp.exception.NotExistStorageException;
+import com.basejava.webapp.exception.StorageException;
 import com.basejava.webapp.model.Resume;
 
 import java.util.Arrays;
@@ -24,8 +27,7 @@ public abstract class AbstractArrayStorage implements Storage {
     public Resume get(String uuid) {
         int index = getIndex(uuid);
         if (index < 0) {
-            System.out.println("Resume " + uuid + " not exist");
-            return null;
+            throw new NotExistStorageException(uuid);
         }
         return storage[index];
     }
@@ -36,9 +38,9 @@ public abstract class AbstractArrayStorage implements Storage {
             insertElement(r, index);
             size++;
         } else if (index >= 0) {
-            System.out.println("Резюме уже есть");
+            throw new ExistStorageException(r.getUuid());
         } else {
-            System.out.println("Переполнение storage");
+            throw new StorageException("Переполнение storage", r.getUuid());
         }
     }
 
@@ -49,7 +51,7 @@ public abstract class AbstractArrayStorage implements Storage {
             storage[size - 1] = null;
             size--;
         } else {
-            System.out.println(errorResumeNotFound);
+            throw new NotExistStorageException(uuid);
         }
     }
 
@@ -59,7 +61,7 @@ public abstract class AbstractArrayStorage implements Storage {
         if (index >= 0) {
             storage[index] = resume;
         } else {
-            System.out.println(errorResumeNotFound);
+            throw new NotExistStorageException(resume.getUuid());
         }
     }
 
