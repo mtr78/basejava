@@ -20,6 +20,7 @@ public abstract class AbstractArrayStorageTest {
     private static final String UUID_3 = "uuid3";
 
     private static final String UUID_4 = "uuid4";
+    private static final String UUID_NOT_EXIST = "dummy";
 
     private static final Resume Resume_1 = new Resume(UUID_1);
     private static final Resume Resume_2 = new Resume(UUID_2);
@@ -60,12 +61,12 @@ public abstract class AbstractArrayStorageTest {
 
     @Test(expected = NotExistStorageException.class)
     public void getNotExist() throws Exception {
-        storage.get("dummy");
+        storage.get(UUID_NOT_EXIST);
     }
 
     @Test(expected = NotExistStorageException.class)
     public void updateNotExist() throws Exception {
-        storage.get("dummy");
+        storage.get(UUID_NOT_EXIST);
     }
 
     @Test
@@ -84,7 +85,7 @@ public abstract class AbstractArrayStorageTest {
     public void saveOverflowTest() {
         storage.clear();
         try {
-            for (int i = 3; i < STORAGE_LIMIT; i++) {
+            for (int i = 0; i < STORAGE_LIMIT; i++) {
                 storage.save(new Resume());
             }
         } catch (StorageException e) {
