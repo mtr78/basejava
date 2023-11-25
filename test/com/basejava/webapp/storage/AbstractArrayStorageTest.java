@@ -111,7 +111,7 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void getAll() {
-        Resume[] expected = new Resume[STORAGE_LIMIT];
+        Resume[] expected = new Resume[storage.size()];
         expected[0] = new Resume(UUID_1);
         expected[1] = new Resume(UUID_2);
         expected[2] = new Resume(UUID_3);
